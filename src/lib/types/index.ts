@@ -1,1 +1,0 @@
-type TInit = string;
