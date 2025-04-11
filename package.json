@@ -1,0 +1,31 @@
+{
+  "name": "thunder-form",
+  "version": "0.0.1",
+  "description": "A package to build React forms as fast as possible",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup"
+  },
+  "keywords": [
+    "formik",
+    "yup",
+    "react",
+    "form",
+    "react-forms",
+    "quick-forms"
+  ],
+  "author": "icy1xtee",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.2",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3"
+  }
+}
