@@ -1,5 +1,3 @@
-import { ReactElement } from "react";
-
 type JSXElementTag = keyof React.JSX.IntrinsicElements;
 
 type ElementFromJSX<T extends JSXElementTag> =
@@ -18,9 +16,3 @@ export type ThunderBundle<T extends Record<string, React.ReactElement>> = {
       : React.ReactElement
     : never;
 };
-
-export function defineThunderBundle<T extends Record<string, ReactElement>>(
-  components: ThunderBundle<T>
-) {
-  return components;
-}
