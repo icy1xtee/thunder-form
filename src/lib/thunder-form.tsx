@@ -1,52 +1,52 @@
 import { useFormik } from "formik";
 import React, { cloneElement, ReactElement } from "react";
-import { ThunderFormProps } from "./types/thunder-form";
-import { getFlattenFields } from "./utils/flatten-fields";
+import { ThunderFormProps } from "./types";
+import { getFlattenFields } from "./utils/get-flatten-fields";
 import { computeFormSchema } from "./utils/compute-form-schema";
-import { ThunderBlock } from "./types/thunder-block";
+import { ThunderBlock } from "./types";
 import { getDefaultPlaceholder } from "./utils/get-default-placeholder";
 
-export function ThunderForm({
+export function ThunderForm<const T extends ThunderBlock[]>({
   blocks,
+  componentsBundle,
   onSubmit,
   formProps,
   messageForRequiredFields,
-  componentsBundle,
-}: ThunderFormProps) {
+}: ThunderFormProps<T>) {
   const { values, handleChange, handleBlur, handleSubmit } = useFormik({
     initialValues: getFlattenFields(blocks),
     validationSchema: computeFormSchema(blocks, messageForRequiredFields),
     onSubmit: onSubmit,
   });
 
-  const getBlockProps = (block: ThunderBlock) => {
-    if (!block.bundleType || !block.id) return;
+  const getBlockProps = ({ bundleType, id, placeholder }: ThunderBlock) => {
+    if (!bundleType || !id) return;
     return {
-      key: block.id,
-      id: block.id,
-      name: block.id,
-      placeholder: block.placeholder ?? getDefaultPlaceholder(block),
-      value: values[block.id],
+      key: id,
+      id: id,
+      name: id,
+      placeholder: placeholder ?? getDefaultPlaceholder(id),
+      value: values[id as keyof typeof values],
       onChange: handleChange,
       onBlur: handleBlur,
-      // i want to spread block in here
+      // TODO: i want to spread block in here
     };
   };
 
   return (
     <form {...formProps} onSubmit={handleSubmit}>
-      {blocks.map((block) => {
-        if (block.wrapper?.id && block.wrapper.bundleType && block.elements) {
+      {blocks.map(({ wrapper, elements, bundleType, id, ...rest }) => {
+        if (wrapper?.id && wrapper.bundleType && elements) {
           const Wrapper = componentsBundle[
-            block.wrapper.bundleType
+            wrapper.bundleType
             // TODO: type properly
           ] as unknown as ReactElement<React.HTMLAttributes<HTMLElement>>;
 
           return cloneElement(Wrapper, {
-            key: block.wrapper.id,
+            key: wrapper.id,
             children: (
               <>
-                {block.elements.map((el) => {
+                {elements.map((el) => {
                   if (!el.bundleType || !el.id) return;
                   const Component = componentsBundle[el.bundleType];
                   return cloneElement(Component, getBlockProps(el));
@@ -57,9 +57,12 @@ export function ThunderForm({
           });
         }
 
-        if (!block.bundleType || !block.id) return;
-        const Component = componentsBundle[block.bundleType];
-        return cloneElement(Component, getBlockProps(block));
+        if (!bundleType || !id) return;
+        const Component = componentsBundle[bundleType];
+        return cloneElement(
+          Component,
+          getBlockProps({ wrapper, elements, bundleType, id, ...rest })
+        );
       })}
       {cloneElement(
         // TODO: type properly
