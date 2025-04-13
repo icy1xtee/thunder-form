@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import React, { cloneElement, ReactElement } from "react";
-import { ThunderFormProps } from "./types";
+import { ThunderFormProps, ThunderUtils } from "./types";
 import { getFlattenFields } from "./utils/get-flatten-fields";
 import { computeFormSchema } from "./utils/compute-form-schema";
 import { ThunderBlock } from "./types";
@@ -11,11 +11,11 @@ export function ThunderForm<const T extends ThunderBlock[]>({
   componentsBundle,
   onSubmit,
   formProps,
-  messageForRequiredFields,
+  commonMessages,
 }: ThunderFormProps<T>) {
   const { values, handleChange, handleBlur, handleSubmit } = useFormik({
     initialValues: getFlattenFields(blocks),
-    validationSchema: computeFormSchema(blocks, messageForRequiredFields),
+    validationSchema: computeFormSchema(blocks, commonMessages),
     onSubmit: onSubmit,
   });
 
@@ -25,7 +25,9 @@ export function ThunderForm<const T extends ThunderBlock[]>({
       key: id,
       id: id,
       name: id,
-      placeholder: placeholder ?? getDefaultPlaceholder(id),
+      placeholder:
+        placeholder ??
+        getDefaultPlaceholder<T>(id as ThunderUtils.BlockId<typeof blocks>),
       value: values[id as keyof typeof values],
       onChange: handleChange,
       onBlur: handleBlur,

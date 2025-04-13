@@ -1,6 +1,8 @@
-import { ThunderBlockId } from "../types";
+import { ThunderBlock, ThunderUtils } from "../types";
 
-export const getDefaultPlaceholder = (id: ThunderBlockId): string => {
+export function getDefaultPlaceholder<T extends readonly ThunderBlock[]>(
+  id: ThunderUtils.BlockId<T>
+): string {
   if (!id) return "";
   return id
     .replace(/([a-z])([A-Z])/g, "$1 $2")
@@ -9,4 +11,4 @@ export const getDefaultPlaceholder = (id: ThunderBlockId): string => {
       index === 0 ? char.toUpperCase() : char.toLowerCase()
     )
     .trim();
-};
+}

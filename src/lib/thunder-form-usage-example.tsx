@@ -26,6 +26,7 @@ function ThunderFormUsageExample() {
         { id: "email", bundleType: "customInput" },
         { id: "fullname", bundleType: "customInput" },
       ]}
+      commonMessages={{ requiredMessage: "This field is required" }}
       componentsBundle={bundle}
       onSubmit={handleSubmit}
     />
