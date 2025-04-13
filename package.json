@@ -1,6 +1,6 @@
 {
   "name": "thunder-form",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A package to build React forms as fast as possible",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
