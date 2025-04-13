@@ -25,7 +25,7 @@ npm install thunder-form
 After installation, you need to define your `componentsBundle` using `defineThunderBundle` function:
 
 ```jsx
-import { defineThunderBundle } from "../lib/types/thunder-bundle";
+import { defineThunderBundle } from "thunder-form";
 
 const componentsBundle = defineThunderBundle({
   customInput: <CustomInput />,
@@ -46,6 +46,8 @@ const componentsBundle = defineThunderBundle({
 Now you can create forms as fast as possible using a `ThunderForm` React-component:
 
 ```jsx
+import { ThunderForm } from "thunder-form";
+
 function MyForm() {
   const handleSubmit = (values, formikHelpers)=>{
     // Submit your form here
